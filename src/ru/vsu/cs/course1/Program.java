@@ -14,8 +14,7 @@ public class Program {
     public static class CmdParams {
         public String inputFile;
         public String outputFile;
-        public boolean reverseRows;
-        public boolean reverseColumns;
+        public boolean replaceMinVisMaxSumColumn;
         public boolean error;
         public boolean help;
         public boolean window;
@@ -32,22 +31,9 @@ public class Program {
                 params.window = true;
                 return params;
             }
-            if (!args[0].equals("-r") && !args[0].equals("-c")) {
-                params.error = true;
-                params.help = true;
-                return params;
+            if (args[0].equals("-d")) {
+                params.replaceMinVisMaxSumColumn = true;
             }
-            if (args[0].equals("-r")) {
-                params.reverseRows = true;
-            } else {
-                params.reverseColumns = true;
-            }
-            if (args.length < 2) {
-                params.help = true;
-                params.error = true;
-                return params;
-            }
-
             params.inputFile = args[1];
             if (args.length > 2) {
                 params.outputFile = args[2];
@@ -79,8 +65,7 @@ public class Program {
             PrintStream out = params.error ? System.err : System.out;
             out.println("Usage:");
             out.println("  <cmd> args <input-file> (<output-file>)");
-            out.println("    -r  // reverse rows");
-            out.println("    -c  // reverse columns");
+            out.println("    -d  // reverse min and max sum column");
             out.println("  <cmd> --help");
             out.println("  <cmd> --window  // show window");
             System.exit(params.error ? 1 : 0);
@@ -93,11 +78,8 @@ public class Program {
                 System.err.printf("Can't read array from \"%s\"%n", params.inputFile);
                 System.exit(2);
             }
-            if (params.reverseRows) {
-                Task.reverseRows(arr2);
-            }
-            if (params.reverseColumns) {
-                Task.reverseColumns(arr2);
+            if (params.replaceMinVisMaxSumColumn){
+                Solution.test(arr2);
             }
 
             PrintStream out = (params.outputFile != null) ? new PrintStream(params.outputFile) : System.out;
